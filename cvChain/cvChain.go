@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/hyperledger/fabric/bccsp"
+	"github.com/hyperledger/fabric/bccsp/factory"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/core/chaincode/shim/ext/entities"
 	"github.com/hyperledger/fabric/protos/peer"
@@ -168,7 +169,9 @@ func (t *SimpleAsset) Decrypter(stub shim.ChaincodeStubInterface, args []string,
 
 // main function starts up the chaincode in the container during instantiate
 func main() {
-	if err := shim.Start(new(SimpleAsset)); err != nil {
+	factory.InitFactories(nil)
+	err := shim.Start(&SimpleAsset{factory.GetDefault()})
+	if err != nil {
 		fmt.Printf("Error starting SimpleAsset chaincode: %s", err)
 	}
 }
