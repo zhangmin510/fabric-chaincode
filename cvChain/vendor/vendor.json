@@ -265,6 +265,12 @@
 			"revisionTime": "2018-07-08T17:21:58Z"
 		},
 		{
+			"checksumSHA1": "nZBeMVJkNqHCK/ntmXNrVKya8Ng=",
+			"path": "github.com/hyperledger/fabric/core/chaincode/shim/ext/entities",
+			"revision": "a891a8f9b5a7c5b0ffcca9ad8b234b332417a45e",
+			"revisionTime": "2018-07-08T17:21:58Z"
+		},
+		{
 			"checksumSHA1": "bx1oSTMfUE3GW7fXVV8y1XgbEWg=",
 			"path": "github.com/hyperledger/fabric/core/comm",
 			"revision": "a891a8f9b5a7c5b0ffcca9ad8b234b332417a45e",
@@ -401,11 +407,10 @@
 			"revisionTime": "2018-07-08T17:21:58Z"
 		},
 		{
-			"checksumSHA1": "rJab1YdNhQooDiBWNnt7TLWPyBU=",
-			"origin": "github.com/hyperledger/fabric/vendor/github.com/pkg/errors",
+			"checksumSHA1": "ljd3FhYRJ91cLZz3wsH9BQQ2JbA=",
 			"path": "github.com/pkg/errors",
-			"revision": "a891a8f9b5a7c5b0ffcca9ad8b234b332417a45e",
-			"revisionTime": "2018-07-08T17:21:58Z"
+			"revision": "816c9085562cd7ee03e7f8188a1cfd942858cded",
+			"revisionTime": "2018-03-11T21:45:15Z"
 		},
 		{
 			"checksumSHA1": "NDSnw8vnCScWoKlqqooqgM8Nq4s=",
