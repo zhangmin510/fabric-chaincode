@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
@@ -21,7 +22,6 @@ type SimpleAsset struct {
 // data. Note that chaincode upgrade also calls this function to reset
 // or to migrate data.
 func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response {
-
 	// Get the args from the transaction proposal
 	args := stub.GetStringArgs()
 	if len(args) != 2 {
@@ -47,10 +47,10 @@ func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 
 	var result string
 	var err error
-	if fn == "set" {
-		result, err = set(stub, args)
+	if fn == "addRecord" {
+		result, err = addRecord(stub, args)
 	} else { // assume 'get' even if fn is nil
-		result, err = get(stub, args)
+		result, err = getRecord(stub, args)
 	}
 	if err != nil {
 		return shim.Error(err.Error())
@@ -62,32 +62,35 @@ func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 
 // Set stores the asset (both key and value) on the ledger. If the key exists,
 // it will override the value with the new one
-func set(stub shim.ChaincodeStubInterface, args []string) (string, error) {
-	if len(args) != 2 {
+func addRecord(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+	if len(args) != 4 {
 		return "", fmt.Errorf("Incorrect arguments. Expecting a key and a value")
 	}
-
-	err := stub.PutState(args[0], []byte(args[1]))
+	key := args[0] + ":" + args[1]
+	value := args[2] + ":" + args[3]
+	err := stub.PutState(key, []byte(value))
 	if err != nil {
 		return "", fmt.Errorf("Failed to set asset: %s", args[0])
 	}
-	return args[1], nil
+	return value, nil
 }
 
 // Get returns the value of the specified asset key
-func get(stub shim.ChaincodeStubInterface, args []string) (string, error) {
-	if len(args) != 1 {
+func getRecord(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+	if len(args) != 2 {
 		return "", fmt.Errorf("Incorrect arguments. Expecting a key")
 	}
 
-	value, err := stub.GetState(args[0])
+	key := args[0] + ":" + args[1]
+	value, err := stub.GetState(key)
+	result := strings.Split(string(value), ":")
 	if err != nil {
 		return "", fmt.Errorf("Failed to get asset: %s with error: %s", args[0], err)
 	}
 	if value == nil {
 		return "", fmt.Errorf("Asset not found: %s", args[0])
 	}
-	return string(value), nil
+	return result[0], nil
 }
 
 // main function starts up the chaincode in the container during instantiate
